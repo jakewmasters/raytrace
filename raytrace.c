@@ -3,7 +3,7 @@
 #include <zlib.h>
 
 void
-write_ppm(char *out_file)
+write_ppm(char *out_file, int nx, int ny)
 {
     FILE *out_file_ptr;
     if ((out_file_ptr = fopen(out_file, "w")) == NULL) {
@@ -11,9 +11,18 @@ write_ppm(char *out_file)
         exit(1);
     }
 
-    fprintf(out_file_ptr, "P3\n3 2\n1\n");
-    fprintf(out_file_ptr, "1 0 0   0 1 0   0 0 1\n");
-    fprintf(out_file_ptr, "1 1 0   1 1 1   0 0 0\n");
+    fprintf(out_file_ptr, "P3\n%d %d\n255\n", nx, ny);
+    for (int j=ny-1; j >=0; --j){
+        for (int i=0; i < nx; ++i){
+            float r = (float)i / (float)nx;
+            float g = (float)j / (float)ny;
+            float b = 0.2;
+            int ir = (int)(255.99*r);
+            int ig = (int)(255.99*g);
+            int ib = (int)(255.99*b);
+            fprintf(out_file_ptr, "%d %d %d\n", ir, ig, ib);
+        }
+    }
 
     fclose(out_file_ptr);
 }
@@ -44,7 +53,9 @@ main(int argc, char **argv)
         }
     }
 
-    // int nx = 200;
-    // int ny = 200;
-    write_ppm(out_file);
+    int nx = 200;
+    int ny = 100;
+    write_ppm(out_file, nx, ny);
+
+    // got through chapter 1 of Raytracing in a Weekend!
 }
