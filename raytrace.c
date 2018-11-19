@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>
+#include <math.h>
+#include "vec3.h"
 
 void
 write_ppm(char *out_file, int nx, int ny)
