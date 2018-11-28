@@ -28,6 +28,16 @@ vec3_add(vec3 v1, vec3 v2)
 }
 
 vec3
+vec3_subtract(vec3 v1, vec3 v2)
+{
+    vec3 ret_vec;
+    ret_vec.x = v1.x - v2.x;
+    ret_vec.y = v1.y - v2.y;
+    ret_vec.z = v1.z - v2.z;
+    return ret_vec;
+}
+
+vec3
 vec3_divide(vec3 v1, vec3 v2)
 {
     vec3 ret_vec;
@@ -53,6 +63,12 @@ vec3_scale_divide(vec3 v, float t)
     v.y /= t;
     v.z /= t;
     return v;
+}
+
+float
+vec3_dot(vec3 v1, vec3 v2)
+{
+    return (v1.x * v2.x) + (v1.y * v1.y) + (v1.z * v2.z);
 }
 
 float

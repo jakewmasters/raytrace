@@ -11,9 +11,30 @@
     //code
 #endif
 
+int
+hit_sphere(vec3 center, float radius, ray r)
+{
+    vec3 oc = vec3_subtract(ray_origin(r), center);
+    float a = vec3_dot(ray_direction(r), ray_direction(r));
+    float b = 2.0 * vec3_dot(oc, ray_direction(r));
+    float c = vec3_dot(oc, oc) - (radius * radius);
+    float discriminant = (b*b) - 4*a*c;
+    if (discriminant > 0){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 vec3
 color(ray r)
 {
+    // ch 4
+    vec3 center = vec3_init(0.0, 0.0, -1.0);
+    if (hit_sphere(center, 0.5, r)){
+        return vec3_init(0.259, 0.957, 0.819);
+    }
+    // ch 3
     vec3 unit_direction = vec3_unit_vector(ray_direction(r));
     float t = 0.5*(unit_direction.y + 1.0);
     vec3 v1 = vec3_init(1.0, 1.0, 1.0);
@@ -91,4 +112,5 @@ main(int argc, char **argv)
     // got through chapter 1 of Raytracing in a Weekend!
     // chapter 2 implemented **as needed**
     // finished chapter 3!
+    // finished chapter 4!
 }
