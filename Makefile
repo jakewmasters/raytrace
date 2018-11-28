@@ -1,14 +1,13 @@
 # Makefile for Raytracer
 
-CC=mpicc
+CC=gcc
 CFLAGS=-Wall
-EXEC=mpiexec
 
 raytrace: raytrace.o
-	$(CC) $< vec3.c -o $@
+	$(CC) $< vec3.c ray.c -o $@ -lm
 
 exec:
-	$(EXEC) -np 2 ./raytrace -o test.ppm
+	./raytrace -o test.ppm
 
 .PHONY: clean
 clean:
