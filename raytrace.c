@@ -11,7 +11,7 @@
     //code
 #endif
 
-int
+float
 hit_sphere(vec3 center, float radius, ray r)
 {
     vec3 oc = vec3_subtract(ray_origin(r), center);
@@ -19,24 +19,28 @@ hit_sphere(vec3 center, float radius, ray r)
     float b = 2.0 * vec3_dot(oc, ray_direction(r));
     float c = vec3_dot(oc, oc) - (radius * radius);
     float discriminant = (b*b) - 4*a*c;
-    if (discriminant > 0){
-        return 1;
+    if (discriminant < 0){
+        return -1.0;
     } else {
-        return 0;
+        return (-b - sqrt(discriminant))/(2.0*a);
     }
 }
 
 vec3
 color(ray r)
 {
+    // ch 5
     // ch 4
     vec3 center = vec3_init(0.0, 0.0, -1.0);
-    if (hit_sphere(center, 0.5, r)){
-        return vec3_init(0.259, 0.957, 0.819);
+    float t = hit_sphere(center, 0.5, r);
+    if (t > 0.0){
+        vec3 N = vec3_subtract(ray_point_at_param(r, t), center);
+        N = vec3_unit_vector(N);
+        return vec3_scale_multiply(vec3_init(N.x+1.0,N.y+1.0,N.z+1.0), 0.5);
     }
     // ch 3
     vec3 unit_direction = vec3_unit_vector(ray_direction(r));
-    float t = 0.5*(unit_direction.y + 1.0);
+    t = 0.5*(unit_direction.y + 1.0);
     vec3 v1 = vec3_init(1.0, 1.0, 1.0);
     v1 = vec3_scale_multiply(v1, (1.0-t));
     vec3 v2 = vec3_init(0.5, 0.7, 1.0);
@@ -105,12 +109,13 @@ main(int argc, char **argv)
         }
     }
 
-    int nx = 200;
-    int ny = 100;
+    int nx = 4000;
+    int ny = 2000;
     write_ppm(out_file, nx, ny);
 
     // got through chapter 1 of Raytracing in a Weekend!
     // chapter 2 implemented **as needed**
     // finished chapter 3!
     // finished chapter 4!
+    // halfway through chapter 5
 }
